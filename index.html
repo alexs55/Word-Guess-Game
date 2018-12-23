@@ -11,7 +11,10 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
         crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
-    <link rel="stylesheet" href="stylee.css" type="text/css">
+    <link rel="stylesheet" href="assets/stylee.css" type="text/css">
+    <audio autoplay loop>
+        <source src="http://66.90.93.122/ost/super-mario-bros/zawombix/01%20-%20Super%20Mario%20Bros.mp3">
+      </audio>
     <title>Word Game</title>
 </head>
 
@@ -185,8 +188,7 @@
         // attaching function to the button
         newGameButton.addEventListener('click', newgame);
 
-        var audio = new Audio('Super Mario Bros. medley.mp3');
-        audio.play();
+        
 
         document.onkeyup = function (event) {
             if (event.keyCode >= 65 && event.keyCode <= 90) {
