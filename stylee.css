@@ -1,0 +1,54 @@
+
+
+
+body {
+    color: #000000;
+    Background-color: #6284FB;
+    font-family: 'Press Start 2P', cursive;
+    
+}
+/* has placeholders */
+.background {
+
+    background-image: url(https://stmed.net/sites/default/files/super-mario-bros.-hd-wallpapers-33719-8242650.jpg);
+    background-size: cover;
+    background-position: left;
+    background-blend-mode: multiply;
+}
+
+#new-game-button {
+    outline: none;
+    border: none;
+    cursor: pointer;
+    display: block;
+    background-color: #FAB932;
+    position: relative;
+    font-size: 22px;
+    font-weight: bold;
+    color: #9A4800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 6px grey;
+}
+/* cool effect when hovering */
+#new-game-button:hover {
+    box-shadow: 0 4px grey;
+    top: 2px;
+}
+
+#new-game-button:active {
+    box-shadow: 0 0 grey;
+    top: 6px;
+}
+
+#placeholder-section {
+    background-color: #038901;
+
+}
+
+#placeholders {
+    letter-spacing: 6px;
+    font-size: 34px;
+}

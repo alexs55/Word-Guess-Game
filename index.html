@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <link href="https://unpkg.com/nes.css/css/nes.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+        crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <link rel="stylesheet" href="stylee.css" type="text/css">
+    <title>Word Game</title>
+</head>
+
+<body>
+    <div class="jumbotron-fluid background py-5">
+        <div class="container py-5">
+            <div class="row align-items-center">
+
+                <div class="col12 col-md-8 my-3">
+
+                </div>
+                <div class="col-12 col-md-4 my-3">
+                    <h1>Let's-a-go!</h1>
+                    <button id="new-game-button">
+                        <i class="fas fa-gamepad"></i>
+                        Continue? 9...8...7...
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nes-container with-title container-fluid">
+        <div class="row">
+            <div class="col-12 text-center py-5" id="placeholder-section">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-md-6 my-3">
+                            <h2>Guess!
+                                <br />
+                                <span id="placeholders">____ ____ ___!</span>
+                            </h2>
+                        </div>
+                        <div class="col-12 col-md-6 my-3">
+                            <h2>Terrible guesses
+                                <br />
+                                <span id="guessed-letters"></span>
+                            </h2>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-4 text-center py-5">
+                <h3>
+                    Guesses Left: <span id="guesses-left">0</span>
+                </h3>
+            </div>
+            <div class="col-12 col-md-4 text-center py-5">
+                <h3>
+                    Won: <span id="wins">0</span>
+                </h3>
+            </div>
+            <div class="col-12 col-md-4 text-center py-5">
+                <h3>
+                    Lost: <span id="losses">0</span>
+                </h3>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // grabbing things from html
+        var newGameButton = document.getElementById('new-game-button');
+        var placeholders = document.getElementById('placeholders');
+        var guessedLetters = document.getElementById('guessed-letters');
+        var $guessesLeft = document.getElementById('guesses-left');
+        var $wins = document.getElementById('wins');
+        var $losses = document.getElementById('losses');
+
+        // establishing variables used
+        var words = ["mario", "tetris", "link", "zelda", "sonic", "pacman", "pong", "yoshi", "megaman", "pikachu"];
+        var wins = 0;
+        var losses = 0;
+        var guessesLeft = 6;
+        var gameRunning = false;
+        var pickedWord = '';
+        var pickedWordPlaceholderArr = [];
+        var guessedLetterBank = [];
+        var incorrectLetterBank = [];
+
+        // resets game
+        function newgame() {
+            gameRunning = true;
+            guessesLeft = 6;
+            guessedLetterBank = [];
+            incorrectLetterBank = [];
+            pickedWordPlaceholderArr = [];
+            pickedWord = words[Math.floor(Math.random() * words.length)];
+
+            // placing the underscores depending on the word picked
+            for (var i = 0; i < pickedWord.length; i++) {
+                if (pickedWord[i] === ' ') {
+                    pickedWordPlaceholderArr.push('  ');
+
+                } else {
+                    pickedWordPlaceholderArr.push('_');
+                }
+            }
+
+
+            // writes the information inside of the html with textContent
+            $guessesLeft.textContent = guessesLeft;
+            placeholders.textContent = pickedWordPlaceholderArr.join(' ');
+            guessedLetters.textContent = incorrectLetterBank;
+
+        }
+
+        function letterGuess(letter) {
+            console.log(letter);
+            // checks if letter if correct
+            if (gameRunning === true && guessedLetterBank.indexOf(letter) === -1) {
+
+                guessedLetterBank.push(letter);
+
+                for (var i = 0; i < pickedWord.length; i++) {
+                    if (pickedWord[i].toLowerCase() === letter.toLowerCase()) {
+                        pickedWordPlaceholderArr[i] = pickedWord[i];
+
+                    }
+                }
+
+                placeholders.textContent = pickedWordPlaceholderArr.join('');
+                //  makes the checkincorrect function work
+                checkIncorrect(letter);
+                checkWin();
+
+            }
+            else {
+                if (gameRunning === false) {
+                    alert("Hey, LISTEN! Press the continue button to start");
+                } else {
+                    alert("Your letter is already in another castle, try again!");
+                }
+            }
+
+        }
+        //  checks if letter is incorrect
+        function checkIncorrect(letter) {
+            if (pickedWordPlaceholderArr.indexOf(letter.toLowerCase()) === -1 &&
+                pickedWordPlaceholderArr.indexOf(letter.toUpperCase()) === -1) {
+                guessesLeft--;
+                incorrectLetterBank.push(letter);
+                guessedLetters.textContent = incorrectLetterBank.join('');
+                $guessesLeft.textContent = guessesLeft;
+            }
+            checkLoss();
+        }
+
+        // increases loss
+        function checkLoss() {
+            if (guessesLeft === 0) {
+                losses++;
+                gameRunning = false;
+                $losses.textContent = losses;
+            }
+
+        }
+        // increases win
+        function checkWin() {
+            if (pickedWord.toLowerCase() === pickedWordPlaceholderArr.join('').toLowerCase()) {
+                wins++;
+                gameRunning = false;
+                $wins.textContent = wins;
+            }
+        }
+        // attaching function to the button
+        newGameButton.addEventListener('click', newgame);
+
+        var audio = new Audio('Super Mario Bros. medley.mp3');
+        audio.play();
+
+        document.onkeyup = function (event) {
+            if (event.keyCode >= 65 && event.keyCode <= 90) {
+                letterGuess(event.key);
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
